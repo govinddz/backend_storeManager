@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgis/postgis
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+    volumes:
+      - postgresvol:/data/postgres
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+      - pgadminvol:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+
+
+volumes:
+  postgresvol:
+    driver: local
+  pgadminvol:
+    driver: local
